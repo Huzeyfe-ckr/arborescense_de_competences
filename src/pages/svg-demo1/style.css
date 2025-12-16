@@ -1,0 +1,25 @@
+.svg-demo1-page {
+  background-color: #000000;
+  
+}
+
+.svg-demo1-container {
+  margin: 0 auto;
+  padding: 2rem;
+  box-sizing: border-box;
+  overflow: visible; 
+}
+
+.svg-demo1-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  color: #FFFFFF;
+}
+
+
+
+
+
+

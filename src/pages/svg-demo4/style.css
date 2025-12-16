@@ -1,0 +1,18 @@
+.svg-demo3-container {
+  width: 500px;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.svg-demo3-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+.competence-1:hover path { fill: #FF6B6B !important; stroke: #FF6B6B !important; }
+.competence-2:hover path { fill: #FFD93D !important; stroke: #FFD93D !important; }
+.competence-3:hover path { fill: #6BCB77 !important; stroke: #6BCB77 !important; }
+.competence-4:hover path { fill: #4D96FF !important; stroke: #4D96FF !important; }
+.competence-5:hover path { fill: #9B59B6 !important; stroke: #9B59B6 !important; }

@@ -1,0 +1,97 @@
+.historique-section {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #3a3a3c;
+}
+
+.historique-title {
+  margin: 0 0 8px 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: #f5f5f7;
+}
+
+.historique-ac-history {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.historique-entry {
+  padding: 8px;
+  background: linear-gradient(135deg, #2c2c2e 0%, #1c1c1e 100%);
+  border-left: 3px solid #007aff;
+  border-radius: 4px;
+  font-size: 11px;
+  color: #ccc;
+  transition: all 0.2s ease;
+  border: 1px solid #3a3a3c;
+}
+
+.historique-entry:hover {
+  background: linear-gradient(135deg, #3a3a3c 0%, #2c2c2e 100%);
+  border-color: #555;
+}
+
+.historique-entry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.historique-entry-date {
+  font-weight: 600;
+  color: #aaa;
+  font-size: 10px;
+}
+
+.historique-entry-percent {
+  font-weight: 700;
+  font-size: 11px;
+  color: #f5f5f7;
+}
+
+.historique-bar-container {
+  width: 100%;
+  height: 6px;
+  background: #3a3a3c;
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid #555;
+}
+
+.historique-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.historique-no-history {
+  font-size: 11px;
+  color: #666;
+  margin: 0;
+  font-style: italic;
+  text-align: center;
+  padding: 8px;
+}
+
+.historique-ac-history::-webkit-scrollbar {
+  width: 6px;
+}
+
+.historique-ac-history::-webkit-scrollbar-track {
+  background: #2c2c2e;
+  border-radius: 3px;
+}
+
+.historique-ac-history::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 3px;
+}
+
+.historique-ac-history::-webkit-scrollbar-thumb:hover {
+  background: #777;
+}

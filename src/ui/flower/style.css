@@ -1,0 +1,9 @@
+.competence {
+  cursor: pointer;
+
+}
+
+.competence:hover path {
+  opacity: 3;
+}
+
