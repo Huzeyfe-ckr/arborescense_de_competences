@@ -94,6 +94,19 @@ class NiveauxView {
   }
 
 
+
+
+
+
+
+
+
+
+
+
+
+  
+
   /**
    * Mettre à jour la barre de progression d'une compétence
    * @param {string} competence - Nom de la compétence (comprendre, concevoir, etc.)

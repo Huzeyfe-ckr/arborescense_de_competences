@@ -24,10 +24,6 @@ class ButtonsView {
     this.attachEvents();
   }
 
-  html() {
-    return template;
-  }
-
   dom() {
     return this.root;
   }
@@ -37,46 +33,37 @@ class ButtonsView {
   }
 
   attachEvents() {
-    // Événement de toggle
-
-    // Événements des feux de circulation
     this.attachTrafficLightEvents();
 
-    // Événement d'export
+    // ✅ Export
     const exportBtn = this.root.querySelector("#export-btn");
     if (exportBtn) {
       exportBtn.addEventListener("click", () => {
-        UserData.exportToJSON(); // ✅ Appel direct à UserData
+        UserData.exportToJSON();
       });
     }
 
-    // Événement d'import
+    // ✅ Import
     const importBtn = this.root.querySelector("#import-btn");
     if (importBtn) {
       importBtn.addEventListener("click", () => {
-        this.promptImport(); // ✅ Nouvelle méthode simple
+        this.promptImport();
       });
     }
 
-    // Événement de réinitialisation
+    // ✅ Reset
     const resetBtn = this.root.querySelector("#reset-btn");
     if (resetBtn) {
       resetBtn.addEventListener("click", () => {
-        this.promptReset(); // ✅ Nouvelle méthode simple
+        this.promptReset();
       });
     }
   }
 
-  /**
-   * Attacher les événements aux feux de circulation
-   * Rouge : fermer
-   * Vert : ouvrir
-   */
   attachTrafficLightEvents() {
     const redLight = this.root.querySelector(".buttons-traffic-light-red");
     const greenLight = this.root.querySelector(".buttons-traffic-light-green");
 
-    // Rouge = Fermer
     if (redLight) {
       redLight.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -84,7 +71,6 @@ class ButtonsView {
       });
     }
 
-    // Vert = Ouvrir
     if (greenLight) {
       greenLight.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -93,28 +79,20 @@ class ButtonsView {
     }
   }
 
-  /**
-   * Fermer le panneau
-   */
   collapse() {
     if (this.isCollapsed) return;
-    
     this.isCollapsed = true;
     this.root.classList.add("buttons-collapsed");
   }
 
-  /**
-   * Ouvrir le panneau
-   */
   expand() {
     if (!this.isCollapsed) return;
-    
     this.isCollapsed = false;
     this.root.classList.remove("buttons-collapsed");
   }
 
   /**
-   * Demander la confirmation et importer les données
+   * Importer des données
    */
   promptImport() {
     const input = document.createElement('input');
@@ -142,7 +120,7 @@ class ButtonsView {
   }
 
   /**
-   * Demander la confirmation et réinitialiser les données
+   * Réinitialiser les données
    */
   promptReset() {
     if (confirm("Êtes-vous sûr de vouloir réinitialiser toutes les données ?")) {

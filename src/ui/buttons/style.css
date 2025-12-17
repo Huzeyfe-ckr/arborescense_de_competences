@@ -193,7 +193,7 @@
 
 /* Bouton Export */
 .buttons-btn-export {
-  background: linear-gradient(135deg, #34c759 0%, #1aab20 100%);
+  background: linear-gradient(135deg, #279342 0%, #006503 100%);
   color: #fff;
 }
 
@@ -203,7 +203,7 @@
 
 /* Bouton Import */
 .buttons-btn-import {
-  background: linear-gradient(135deg, #007aff 0%, #0051d5 100%);
+  background: linear-gradient(135deg, #2b5f97 0%, #0044b3 100%);
   color: #fff;
 }
 

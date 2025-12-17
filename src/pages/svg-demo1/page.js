@@ -249,7 +249,7 @@ V.attachEvents = function() {
 V.setPercentageFill = function(acElement, percent) {
   const acId = acElement.id;
   
-  // Sauvegarder dans le localStorage
+  // Sauvegarder la donnée
   UserData.saveAC(acId, percent);
   
   // Mettre à jour l'affichage SVG
@@ -304,7 +304,7 @@ V.updateNiveauxPanel = function() {
   
   groups.forEach(g => {
     const acId = g.id;
-    // Récupérer le pourcentage depuis Storage (localStorage) au lieu du SVG
+    // Récupérer le pourcentage depuis la donnée sauvegardée
     const percentage = parseInt(UserData.get(acId)) || 0;
     const compClass = Array.from(g.classList).find(c => c.startsWith("competence-"));
     
