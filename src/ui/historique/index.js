@@ -2,7 +2,7 @@ import { htmlToDOM } from "../../lib/utils.js";
 import template from "./template.html?raw";
 import "./style.css";
 import { gsap } from "gsap";
-import { Storage } from "../../lib/storage.js";
+import { UserData } from "../../data/userdata.js"; 
 
 class HistoriqueView {
   constructor() {
@@ -33,7 +33,7 @@ class HistoriqueView {
     };
 
     const color = colorMap[competenceClass] || "#007aff";
-    const history = Storage.getHistoryByAC(acId);
+    const history = UserData.getHistoryByAC(acId); 
     const historyContainer = this.root.querySelector(".historique-ac-history");
 
     // Vider le conteneur
@@ -47,8 +47,10 @@ class HistoriqueView {
       return;
     }
 
+    const reversedHistory = [...history].reverse();
+
     // Afficher l'historique
-    history.forEach((entry) => {
+    reversedHistory.forEach((entry) => {
       const entryDiv = document.createElement("div");
       entryDiv.className = "historique-entry";
 

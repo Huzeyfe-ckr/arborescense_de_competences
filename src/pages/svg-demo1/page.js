@@ -7,7 +7,7 @@ import template from "./template.html?raw";
 import { Animation } from "@/lib/animation.js";
 import { HistoriqueView } from "@/ui/historique";
 import { PannelView } from "@/ui/Pannel";
-import { Storage } from "@/lib/storage.js";
+import { UserData } from "@/data/userdata.js";
 
 
 
@@ -150,7 +150,7 @@ V.init = function() {
       path.addEventListener("click", (e) => {
         e.stopPropagation();
         V.selectedAC = g;
-        // ✅ Passer les données de l'AC depuis acDescriptions
+
         const acData = M.CompetencesData[g.id] || {};
         V.pannelView.show(g.id, compClass, acData);
       });
@@ -174,7 +174,7 @@ V.init = function() {
 
 // Charger les données au démarrage
 V.loadSavedData = function() {
-  const allData = Storage.getAll();
+  const allData = UserData.getAll();
   const colorMap = {
     "competence-1": "#A30000",
     "competence-2": "#FF5500",
@@ -210,6 +210,12 @@ V.loadSavedData = function() {
 
 
 
+
+
+
+
+
+
 // Mise à jour des sélecteurs dans V.attachEvents()
 V.attachEvents = function() {
   const percentBtns = V.pannelView.dom().querySelectorAll(".panel-percent-btn");
@@ -221,12 +227,6 @@ V.attachEvents = function() {
     });
   });
 
-  const closeBtn = V.pannelView.dom().querySelector("#toggle-pannel");
-  if (closeBtn) {
-    closeBtn.addEventListener("click", () => {
-      V.pannelView.hide();
-    });
-  }
 
   document.addEventListener("click", (e) => {
     if (!V.pannelView.dom().contains(e.target) && !e.target.closest("[id^='AC']")) {
@@ -250,7 +250,7 @@ V.setPercentageFill = function(acElement, percent) {
   const acId = acElement.id;
   
   // Sauvegarder dans le localStorage
-  Storage.saveAC(acId, percent);
+  UserData.saveAC(acId, percent);
   
   // Mettre à jour l'affichage SVG
   const opacity = percent / 100;
@@ -305,7 +305,7 @@ V.updateNiveauxPanel = function() {
   groups.forEach(g => {
     const acId = g.id;
     // Récupérer le pourcentage depuis Storage (localStorage) au lieu du SVG
-    const percentage = parseInt(Storage.get(acId)) || 0;
+    const percentage = parseInt(UserData.get(acId)) || 0;
     const compClass = Array.from(g.classList).find(c => c.startsWith("competence-"));
     
     const competenceMap = {

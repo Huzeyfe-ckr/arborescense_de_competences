@@ -11,6 +11,7 @@
     <h4 id="ac-titre" class="panel-ac-titre"></h4>
     <p id="ac-description" class="panel-ac-description"></p>
     
+    <!-- Boutons de pourcentage -->
     <div class="panel-button-group">
       <button class="panel-percent-btn" data-percent="0">0%</button>
       <button class="panel-percent-btn" data-percent="25">25%</button>
@@ -19,6 +20,18 @@
       <button class="panel-percent-btn" data-percent="100">100%</button>
     </div>
 
+    <!--  Justification -->
+    <div class="panel-justification">
+      <h4 class="panel-justification-title">Justificatif</h4>
+      <div class="panel-justification-list" id="justification-list">
+        <!-- Les fichiers importés s'affichent ici -->
+      </div>
+      <button class="panel-import-btn" id="import-justification-btn">
+        + Importer un justificatif
+      </button>
+    </div>
+
+    <!-- Historique -->
     <slot name="historique"></slot>
   </div>
 </div>

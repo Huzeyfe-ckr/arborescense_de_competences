@@ -13,6 +13,7 @@ class PannelView {
     this.currentCompetence = null;
     this.historiqueView = null;
     this.parts = [];
+    this.justifications = {};
     
     let nodes = this.root.querySelectorAll("[data-id]");
     for (let node of nodes) {
@@ -25,6 +26,7 @@ class PannelView {
     }
     
     this.attachTrafficLightEvents();
+    this.attachJustificationEvents();
   }
 
   html() {
@@ -96,6 +98,118 @@ class PannelView {
     this.root.classList.remove("panel-collapsed");
   }
 
+
+    /**
+   * Attacher les événements pour la gestion des justificatifs
+   */
+  attachJustificationEvents() {
+    const importBtn = this.root.querySelector("#import-justification-btn");
+    if (importBtn) {
+      importBtn.addEventListener("click", () => {
+        this.importJustification();
+      });
+    }
+  }
+
+  /**
+   * Importer un justificatif (fichier) pour l'AC actuel
+   */
+  importJustification() {
+
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "*/*"; // Accepte tous les types de fichiers
+    input.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        this.addJustification(this.currentAcId, file);
+      }
+    });
+    input.click();
+  }
+
+  /**
+   * Ajouter un justificatif à un AC
+   * @param {string} acId - ID de l'AC
+   * @param {File} file - Fichier à ajouter
+   */
+  addJustification(acId, file) {
+    // Initialiser le tableau des justificatifs pour cet AC s'il n'existe pas
+    if (!this.justifications[acId]) {
+      this.justifications[acId] = [];
+    }
+
+    // Créer un objet avec les infos du fichier
+    const justification = {
+      id: Date.now(), // ID unique basé sur timestamp
+      name: file.name,
+      size: (file.size / 1024).toFixed(2), // Taille en KB
+      type: file.type,
+      date: new Date().toLocaleString("fr-FR"),
+      file: file // Stocker le fichier pour téléchargement futur
+    };
+
+    this.justifications[acId].push(justification);
+    this.displayJustifications(acId);
+  }
+
+  /**
+   * Afficher les justificatifs pour un AC
+   * @param {string} acId - ID de l'AC
+   */
+  displayJustifications(acId) {
+    const listContainer = this.root.querySelector("#justification-list");
+    listContainer.innerHTML = "";
+
+    const justificationsList = this.justifications[acId] || [];
+
+    if (justificationsList.length === 0) {
+      listContainer.innerHTML = '<p style="color: #666; font-size: 12px; margin: 0;">Aucun justificatif pour le moment</p>';
+      return;
+    }
+
+    justificationsList.forEach((justif) => {
+      const itemDiv = document.createElement("div");
+      itemDiv.className = "panel-justification-item";
+
+      const nameSpan = document.createElement("span");
+      nameSpan.className = "panel-justification-item-name";
+      nameSpan.title = `${justif.name} (${justif.size} KB)`;
+      nameSpan.textContent = `📄 ${justif.name}`;
+
+      const deleteBtn = document.createElement("button");
+      deleteBtn.className = "panel-justification-item-delete";
+      deleteBtn.textContent = "✕";
+      deleteBtn.addEventListener("click", () => {
+        this.removeJustification(acId, justif.id);
+      });
+
+      itemDiv.appendChild(nameSpan);
+      itemDiv.appendChild(deleteBtn);
+      listContainer.appendChild(itemDiv);
+    });
+  }
+  /**
+   * Supprimer un justificatif
+   * @param {string} acId - ID de l'AC
+   * @param {number} justifId - ID du justificatif
+   */
+  removeJustification(acId, justifId) {
+    if (this.justifications[acId]) {
+      this.justifications[acId] = this.justifications[acId].filter(j => j.id !== justifId);
+      this.displayJustifications(acId);
+    }
+  }
+
+
+
+
+
+
+
+
+
+
   /**
    * Afficher les infos d'un AC dans le panneau
    * @param {string} acId - ID de l'AC
@@ -128,6 +242,10 @@ class PannelView {
     } else if (titre) {
       titre.textContent = "";
     }
+
+
+        //Afficher les justificatifs pour cet AC
+    this.displayJustifications(acId);
     
     // Afficher l'historique avec la couleur de la compétence
     if (this.historiqueView) {
@@ -143,6 +261,22 @@ class PannelView {
   hide() {
     this.root.classList.add("panel-hidden");
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 export { PannelView };
