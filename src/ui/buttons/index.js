@@ -91,9 +91,7 @@ class ButtonsView {
     this.root.classList.remove("buttons-collapsed");
   }
 
-  /**
-   * Importer des données
-   */
+
   promptImport() {
     const input = document.createElement('input');
     input.type = 'file';
@@ -105,7 +103,7 @@ class ButtonsView {
         reader.onload = (event) => {
           try {
             const importedData = JSON.parse(event.target.result);
-            UserData.importFromJSON(importedData); // ✅ Appel à UserData
+            UserData.importFromJSON(importedData); // 
             alert('Données importées avec succès !');
             location.reload();
           } catch (error) {
@@ -124,7 +122,7 @@ class ButtonsView {
    */
   promptReset() {
     if (confirm("Êtes-vous sûr de vouloir réinitialiser toutes les données ?")) {
-      UserData.clear(); // ✅ Appel à UserData
+      UserData.clear();
       alert('Toutes les données ont été réinitialisées.');
       location.reload();
     }

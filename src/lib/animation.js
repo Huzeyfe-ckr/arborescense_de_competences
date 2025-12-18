@@ -440,6 +440,284 @@ Animation.attachACHover = function(path, fromColor, toColor, duration = 0.2) {
 
 
 
+/**
+   * Mettre en avant un point
+   */
+  Animation.highlightPoint = function(competence) {
+    const point = this.root.querySelector(`[data-competence="${competence}"]`);
+    if (point) {
+      gsap.to(point.querySelector(".radar-point-bg"), {
+        r: 12,
+        opacity: 0.4,
+        duration: 0.3
+      });
+    }
+  };
+
+
+
+  /**
+   * Réinitialiser la mise en avant
+   */
+  Animation.resetHighlight = function() {
+    gsap.to(".radar-point-bg", {
+      r: 8,
+      opacity: 0.2,
+      duration: 0.3
+    });
+  }
+
+
+
+
+  Animation.updateFillColor = function() {
+    const maxComp = Object.keys(this.percentages).reduce((a, b) =>
+      this.percentages[a] > this.percentages[b] ? a : b
+    );
+    const color = this.competenceMap[maxComp];
+    
+    gsap.to(this.fillPolygon, {
+      attr: { fill: color, stroke: color },
+      duration: 0.6,
+      ease: "power2.out"
+    });
+  }
+
+
+
+
+
+
+
+
+
+/**
+ * Animations du Niveaux View
+ */
+const niveauxAnimations = {
+  /**
+   * Animer le pourcentage d'une compétence dans le panneau
+   * @param {HTMLElement} percentSpan - L'élément texte du pourcentage
+   * @param {number} targetValue - La valeur cible
+   */
+  animatePercentage(percentSpan, targetValue) {
+    const currentValue = parseInt(percentSpan.textContent) || 0;
+    gsap.to({ value: currentValue }, {
+      value: Math.round(targetValue),
+      duration: 0.6,
+      ease: "power2.out",
+      onUpdate: function() {
+        percentSpan.textContent = Math.round(this.targets()[0].value) + "%";
+      }
+    });
+  },
+
+  /**
+   * Animer la barre de progression
+   * @param {HTMLElement} progressBar - La barre à animer
+   * @param {number} percentage - Le pourcentage cible
+   * @param {string} color - La couleur de la barre
+   */
+  animateProgressBar(progressBar, percentage, color) {
+    gsap.to(progressBar, {
+      width: `${percentage}%`,
+      duration: 0.6,
+      ease: "power2.out"
+    });
+
+    gsap.to(progressBar, {
+      backgroundColor: color,
+      duration: 0.4,
+      ease: "power2.out"
+    });
+  },
+
+  /**
+   * Fermer le panneau niveaux avec animation
+   * @param {HTMLElement} content - L'élément de contenu à fermer
+   * @param {Function} onComplete - Callback une fois fermé
+   */
+  collapsePanel(content, onComplete) {
+    gsap.to(content, {
+      height: 0,
+      opacity: 0,
+      marginTop: 0,
+      duration: 0.3,
+      ease: "power2.inOut",
+      onComplete: onComplete
+    });
+  },
+
+  /**
+   * Ouvrir le panneau niveaux avec animation
+   * @param {HTMLElement} content - L'élément de contenu à ouvrir
+   */
+  expandPanel(content) {
+    gsap.to(content, {
+      height: "auto",
+      opacity: 1,
+      marginTop: 20,
+      duration: 0.3,
+      ease: "power2.inOut"
+    });
+  },
+
+  /**
+   * Masquer complètement le panneau niveaux
+   * @param {HTMLElement} root - L'élément racine du panneau
+   */
+  hidePanel(root) {
+    gsap.to(root, {
+      opacity: 0,
+      pointerEvents: "none",
+      duration: 0.3,
+      ease: "power2.out"
+    });
+  },
+
+  /**
+   * Afficher le panneau niveaux
+   * @param {HTMLElement} root - L'élément racine du panneau
+   */
+  showPanel(root) {
+    gsap.to(root, {
+      opacity: 1,
+      pointerEvents: "auto",
+      duration: 0.3,
+      ease: "power2.out"
+    });
+  }
+};
+
+/**
+ * Animations du Radar View
+ */
+const radarAnimations = {
+  /**
+   * Animer la mise en avant d'un point du radar
+   * @param {SVGElement} pointBg - L'élément de fond du point
+   */
+  highlightPoint(pointBg) {
+    gsap.to(pointBg, {
+      attr: { r: 12 },
+      opacity: 0.4,
+      duration: 0.3,
+      ease: "power2.out"
+    });
+  },
+
+  /**
+   * Réinitialiser la mise en avant de tous les points
+   * @param {NodeList} pointBgs - Tous les éléments de fond des points
+   */
+  resetHighlight(pointBgs) {
+    gsap.to(pointBgs, {
+      attr: { r: 8 },
+      opacity: 0.2,
+      duration: 0.3,
+      ease: "power2.out"
+    });
+  },
+
+  /**
+   * Animer le pourcentage d'une compétence
+   * @param {HTMLElement} percentSpan - L'élément texte du pourcentage
+   * @param {number} targetValue - La valeur cible du pourcentage
+   */
+  animatePercentage(percentSpan, targetValue) {
+    gsap.to(percentSpan, {
+      textContent: Math.round(targetValue),
+      duration: 0.6,
+      snap: { textContent: 1 },
+      ease: "power2.out",
+      onUpdate: function() {
+        percentSpan.textContent = Math.round(this.targets()[0].textContent) + "%";
+      }
+    });
+  },
+
+  /**
+   * Animer le pentagone du radar
+   * @param {SVGPolygonElement} fillPolygon - Le polygone à animer
+   * @param {string} newPoints - Les nouveaux points du polygone
+   */
+  animatePentagon(fillPolygon, newPoints) {
+    gsap.to(fillPolygon, {
+      attr: { points: newPoints },
+      duration: 0.6,
+      ease: "power2.out"
+    });
+  },
+
+  /**
+   * Animer la couleur du pentagone
+   * @param {SVGPolygonElement} fillPolygon - Le polygone à animer
+   * @param {string} color - La nouvelle couleur
+   */
+  animatePentagonColor(fillPolygon, color) {
+    gsap.to(fillPolygon, {
+      attr: { fill: color, stroke: color },
+      duration: 0.6,
+      ease: "power2.out"
+    });
+  },
+
+  /**
+   * Fermer le panneau radar avec animation
+   * @param {HTMLElement} content - L'élément de contenu à fermer
+   * @param {Function} onComplete - Callback une fois fermé
+   */
+  collapsePanel(content, onComplete) {
+    gsap.to(content, {
+      height: 0,
+      opacity: 0,
+      marginTop: 0,
+      duration: 0.3,
+      ease: "power2.inOut",
+      onComplete: onComplete
+    });
+  },
+
+  /**
+   * Ouvrir le panneau radar avec animation
+   * @param {HTMLElement} content - L'élément de contenu à ouvrir
+   */
+  expandPanel(content) {
+    gsap.to(content, {
+      height: "auto",
+      opacity: 1,
+      marginTop: 20,
+      duration: 0.3,
+      ease: "power2.inOut"
+    });
+  },
+
+  /**
+   * Masquer complètement le panneau radar
+   * @param {HTMLElement} root - L'élément racine du panneau
+   */
+  hidePanel(root) {
+    gsap.to(root, {
+      opacity: 0,
+      pointerEvents: "none",
+      duration: 0.3,
+      ease: "power2.out"
+    });
+  },
+
+  /**
+   * Afficher le panneau radar
+   * @param {HTMLElement} root - L'élément racine du panneau
+   */
+  showPanel(root) {
+    gsap.to(root, {
+      opacity: 1,
+      pointerEvents: "auto",
+      duration: 0.3,
+      ease: "power2.out"
+    });
+  }
+};
 
 
 
@@ -457,4 +735,80 @@ Animation.attachACHover = function(path, fromColor, toColor, duration = 0.2) {
 
 
 
-export { Animation };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Animations du Historique View
+ */
+const historiqueAnimations = {
+  /**
+   * Animer la barre de remplissage d'une entrée d'historique
+   * @param {HTMLElement} barFill - La barre à animer
+   * @param {number} percentage - Le pourcentage cible
+   * @param {number} delay - Délai avant le début de l'animation
+   */
+  animateHistoriqueBar(barFill, percentage, delay = 0.1) {
+    gsap.to(barFill, {
+      width: `${percentage}%`,
+      duration: 0.5,
+      ease: "power2.out",
+      delay: delay
+    });
+  },
+
+  /**
+   * Animer l'apparition d'une entrée d'historique
+   * @param {HTMLElement} entryDiv - L'élément d'entrée à animer
+   * @param {number} delay - Délai avant le début de l'animation
+   */
+  animateEntryAppear(entryDiv, delay = 0) {
+    gsap.fromTo(entryDiv, 
+      {
+        opacity: 0,
+        y: 10
+      },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.3,
+        ease: "power2.out",
+        delay: delay
+      }
+    );
+  },
+
+  /**
+   * Scroller automatiquement vers le bas du conteneur
+   * @param {HTMLElement} container - Le conteneur à scroller
+   */
+  scrollToBottom(container) {
+    gsap.to(container, {
+      scrollTo: { y: "max" },
+      duration: 0.4,
+      ease: "power2.inOut"
+    });
+  }
+};
+
+export { Animation,radarAnimations, niveauxAnimations, historiqueAnimations };

@@ -99,6 +99,32 @@ class PannelView {
   }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     /**
    * Attacher les événements pour la gestion des justificatifs
    */
@@ -110,6 +136,32 @@ class PannelView {
       });
     }
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   /**
    * Importer un justificatif (fichier) pour l'AC actuel
@@ -128,6 +180,32 @@ class PannelView {
     input.click();
   }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   /**
    * Ajouter un justificatif à un AC
    * @param {string} acId - ID de l'AC
@@ -138,6 +216,32 @@ class PannelView {
     if (!this.justifications[acId]) {
       this.justifications[acId] = [];
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // Créer un objet avec les infos du fichier
     const justification = {
@@ -152,6 +256,45 @@ class PannelView {
     this.justifications[acId].push(justification);
     this.displayJustifications(acId);
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   /**
    * Afficher les justificatifs pour un AC
@@ -189,6 +332,34 @@ class PannelView {
       listContainer.appendChild(itemDiv);
     });
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   /**
    * Supprimer un justificatif
    * @param {string} acId - ID de l'AC
@@ -200,6 +371,45 @@ class PannelView {
       this.displayJustifications(acId);
     }
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

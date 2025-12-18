@@ -1,0 +1,180 @@
+.radar-panel {
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  background: var(--color-dark-bg);
+  border: 1px solid var(--color-dark-border);
+  border-radius: var(--radius-xl);
+  padding: 0;
+  box-shadow: var(--shadow-xl);
+  z-index: 999;
+  min-width: 320px;
+  overflow: hidden;
+  animation: slideInTop 0.3s ease-out;
+  color: var(--color-text-primary);
+  transition: all var(--transition-normal);
+}
+
+.radar-panel.radar-collapsed .radar-content {
+  display: none;
+}
+
+/* Header avec traffic lights */
+.radar-header {
+  background: linear-gradient(180deg, var(--color-dark-card) 0%, var(--color-dark-bg) 100%);
+  border-bottom: 1px solid var(--color-dark-border);
+  padding: var(--spacing-sm) var(--spacing-md);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  min-height: 40px;
+  transition: all var(--transition-normal);
+}
+
+
+.radar-traffic-lights {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-right: auto;
+  transition: opacity var(--transition-normal);
+}
+
+.radar-traffic-light {
+  width: 12px;
+  height: 12px;
+  border-radius: var(--radius-full);
+  transition: all var(--transition-fast);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.radar-traffic-light-red {
+  background: linear-gradient(135deg, #ff5f56 0%, #ff3a2e 100%);
+}
+
+.radar-traffic-light-red:hover {
+  filter: brightness(1.3);
+  transform: scale(1.15);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+
+.radar-traffic-light-red:active {
+  transform: scale(0.95);
+}
+
+.radar-traffic-light-yellow {
+  background: linear-gradient(135deg, #454545ae 0%, #000000 100%);
+}
+
+
+
+.radar-traffic-light-green {
+  background: linear-gradient(135deg, #27c93f 0%, var(--color-success-dark) 100%);
+}
+
+.radar-traffic-light-green:hover {
+  filter: brightness(1.3);
+  transform: scale(1.15);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+
+.niveaux-traffic-light-green:active {
+  transform: scale(0.95);
+}
+
+
+.radar-title {
+  margin: 0;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  text-align: center;
+  flex: 1;
+  transition: opacity var(--transition-normal);
+  letter-spacing: 0.3px;
+}
+
+/* Contenu du radar */
+.radar-content {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  opacity: 1;
+  height: auto;
+  transition: opacity 0.3s ease, height 0.3s ease;
+}
+
+.radar-3d-wrapper {
+  width: 100%;
+  aspect-ratio: 1;
+  position: relative;
+  min-height: 350px;
+}
+
+.radar-3d {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.1));
+}
+
+/* Animation des points */
+.radar-point {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.radar-point-dot {
+  transition: all 0.3s ease;
+}
+
+.radar-point:hover .radar-point-dot {
+  r: 8;
+  filter: drop-shadow(0 0 15px currentColor);
+}
+
+.radar-percent {
+  transition: all 0.6s ease;
+  font-weight: bold;
+}
+
+.radar-label {
+  transition: all 0.3s ease;
+}
+
+/* Animation du remplissage (pentagone) */
+.radar-fill {
+  transition: all 0.6s ease;
+  filter: drop-shadow(0 0 8px rgba(255, 85, 0, 0.4));
+}
+
+/* Animation au chargement */
+@keyframes radarSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.radar-panel {
+  animation: radarSlideIn 0.4s ease forwards;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .radar-panel {
+    padding: 15px;
+  }
+
+  .radar-3d-wrapper {
+    min-height: 280px;
+  }
+
+  .radar-title {
+    font-size: 14px;
+  }
+}

@@ -1,7 +1,7 @@
 import { htmlToDOM } from "../../lib/utils.js";
+import { historiqueAnimations } from "../../lib/animation.js";
 import template from "./template.html?raw";
 import "./style.css";
-import { gsap } from "gsap";
 import { UserData } from "../../data/userdata.js"; 
 
 class HistoriqueView {
@@ -84,26 +84,17 @@ class HistoriqueView {
       historyContainer.appendChild(entryDiv);
 
       // Animation de la barre
-      gsap.to(barFill, {
-        width: `${entry.percent}%`,
-        duration: 0.5,
-        ease: "power2.out",
-        delay: 0.1
-      });
+      historiqueAnimations.animateHistoriqueBar(barFill, entry.percent, 0.1);
+      
+      // Animation d'apparition de l'entrée
+      historiqueAnimations.animateEntryAppear(entryDiv, 0);
     });
 
     // Scroll vers le bas
-    historyContainer.scrollTop = historyContainer.scrollHeight;
+    historiqueAnimations.scrollToBottom(historyContainer);
   }
 
-  clear() {
-    const historyContainer = this.root.querySelector(".historique-ac-history");
-    historyContainer.innerHTML = "";
-    const noHistory = document.createElement("p");
-    noHistory.className = "historique-no-history";
-    noHistory.textContent = "Aucun historique";
-    historyContainer.appendChild(noHistory);
-  }
+
 }
 
 export { HistoriqueView };

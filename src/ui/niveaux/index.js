@@ -1,13 +1,21 @@
-import { gsap } from "gsap";
 import { htmlToDOM } from "../../lib/utils.js";
+import { niveauxAnimations } from "../../lib/animation.js";
 import template from "./template.html?raw";
 import "./style.css";
-import { Animation } from "../../lib/animation.js";
 
 class NiveauxView {
   constructor() {
     this.root = htmlToDOM(template);
     this.isCollapsed = false;
+    
+    this.competenceMap = {
+      "comprendre": { index: 0, color: "#A30000", class: "niveaux-competence-fill-1" },
+      "concevoir": { index: 1, color: "#FF5500", class: "niveaux-competence-fill-2" },
+      "exprimer": { index: 2, color: "#FFCC00", class: "niveaux-competence-fill-3" },
+      "developper": { index: 3, color: "#2A5B1D", class: "niveaux-competence-fill-4" },
+      "entreprendre": { index: 4, color: "#1A2D5C", class: "niveaux-competence-fill-5" }
+    };
+    
     this.competences = {
       comprendre: 0,
       concevoir: 0,
@@ -32,7 +40,6 @@ class NiveauxView {
     const redLight = this.root.querySelector(".niveaux-traffic-light-red");
     const greenLight = this.root.querySelector(".niveaux-traffic-light-green");
 
-    // Rouge = Fermer
     if (redLight) {
       redLight.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -41,7 +48,6 @@ class NiveauxView {
       redLight.style.cursor = "pointer";
     }
 
-    // Vert = Ouvrir
     if (greenLight) {
       greenLight.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -58,18 +64,13 @@ class NiveauxView {
     if (this.isCollapsed) return;
     
     this.isCollapsed = true;
+    const content = this.root.querySelector(".niveaux-content");
     
-    const arrow = this.root.querySelector(".niveaux-toggle-btn .niveaux-arrow");
-    
-    if (arrow) {
-      gsap.to(arrow, {
-        rotation: -180,
-        duration: 0.3,
-        ease: "power2.inOut"
+    if (content) {
+      niveauxAnimations.collapsePanel(content, () => {
+        this.root.classList.add("niveaux-collapsed");
       });
     }
-    
-    this.root.classList.add("niveaux-collapsed");
   }
 
   /**
@@ -79,80 +80,70 @@ class NiveauxView {
     if (!this.isCollapsed) return;
     
     this.isCollapsed = false;
-    
-    const arrow = this.root.querySelector(".niveaux-toggle-btn .niveaux-arrow");
-    
-    if (arrow) {
-      gsap.to(arrow, {
-        rotation: 0,
-        duration: 0.3,
-        ease: "power2.inOut"
-      });
-    }
-    
     this.root.classList.remove("niveaux-collapsed");
+    
+    const content = this.root.querySelector(".niveaux-content");
+    
+    if (content) {
+      niveauxAnimations.expandPanel(content);
+    }
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
 
   /**
-   * Mettre à jour la barre de progression d'une compétence
-   * @param {string} competence - Nom de la compétence (comprendre, concevoir, etc.)
-   * @param {number} percent - Pourcentage de progression (0-100)
+   * Mettre à jour un pourcentage de compétence
+   * @param {string} competence - Clé de la compétence (comprendre, concevoir, etc.)
+   * @param {number} percentage - Pourcentage (0-100)
    */
-  updateCompetence(competence, percent) {
-    this.competences[competence] = percent;
+  updateCompetence(competence, percentage) {
+    const competenceData = this.competenceMap[competence];
+    if (!competenceData) return;
+
+    this.competences[competence] = percentage;
+
+    // Récupérer l'élément du competence-item
+    const items = this.root.querySelectorAll(".niveaux-competence-item");
+    const item = items[competenceData.index];
     
-    const competenceMap = {
-      comprendre: 0,
-      concevoir: 1,
-      exprimer: 2,
-      developper: 3,
-      entreprendre: 4
-    };
-    
-    const index = competenceMap[competence];
-    if (index !== undefined) {
-      const items = this.root.querySelectorAll(".niveaux-competence-item");
-      const item = items[index];
-      
-      if (item) {
-        const fill = item.querySelector(".niveaux-competence-fill");
-        const percentText = item.querySelector(".niveaux-competence-percent");
-        
-        if (fill) {
-          gsap.to(fill, {
-            width: `${percent}%`,
-            duration: 0.5,
-            ease: "power2.out"
-          });
-        }
-        
-        if (percentText) {
-          percentText.textContent = `${percent}%`;
-        }
-      }
+    if (!item) return;
+
+    const percentSpan = item.querySelector(".niveaux-competence-percent");
+    const progressBar = item.querySelector(".niveaux-competence-fill");
+
+    // Animer le pourcentage texte
+    if (percentSpan) {
+      niveauxAnimations.animatePercentage(percentSpan, percentage);
+    }
+
+    // Animer la barre de progression
+    if (progressBar) {
+      niveauxAnimations.animateProgressBar(progressBar, percentage, competenceData.color);
     }
   }
 
-  hide() {
-    this.root.classList.add("niveaux-hidden");
+  /**
+   * Mettre à jour tous les pourcentages de compétences
+   * @param {object} competences - Objet avec les données des compétences
+   */
+  updateAll(competences) {
+    Object.keys(competences).forEach(comp => {
+      if (this.competenceMap[comp]) {
+        this.updateCompetence(comp, competences[comp]);
+      }
+    });
   }
 
+  /**
+   * Masquer le panneau
+   */
+  hide() {
+    niveauxAnimations.hidePanel(this.root);
+  }
+
+  /**
+   * Afficher le panneau
+   */
   show() {
-    this.root.classList.remove("niveaux-hidden");
+    niveauxAnimations.showPanel(this.root);
   }
 }
 

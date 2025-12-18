@@ -181,8 +181,35 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
-  max-height: 300px;
+  max-height: 200px;
   overflow-y: auto;
+  padding-right: 8px;
+  margin-right: -8px;
+}
+
+/* === SCROLLBAR PERSONNALISÉE === */
+.historique-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.historique-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.historique-container::-webkit-scrollbar-thumb {
+  background: rgba(181, 181, 181, 0.4);
+  border-radius: 3px;
+  transition: background 0.2s ease;
+}
+
+.historique-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(181, 181, 181, 0.7);
+}
+
+/* Scrollbar pour Firefox */
+.historique-container {
+  scrollbar-color: rgba(181, 181, 181, 0.4) transparent;
+  scrollbar-width: thin;
 }
 
 .historique-ac-history {

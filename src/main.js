@@ -11,7 +11,7 @@ import { SvgDemo5Page } from "./pages/svg-demo5/page.js";
 
 import { UserData } from './data/userdata.js';
 
-// ✅ INITIALISER UserData au démarrage
+
 UserData.init();
 
 // Exemple d'utilisation avec authentification

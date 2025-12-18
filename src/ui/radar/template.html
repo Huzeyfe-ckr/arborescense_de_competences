@@ -1,0 +1,97 @@
+<div id="radar-view" class="radar-panel">
+  <!-- Traffic lights macOS -->
+  <div class="radar-header">
+     <div class="radar-traffic-lights">
+      <div class="radar-traffic-light radar-traffic-light-red"></div>
+      <div class="radar-traffic-light radar-traffic-light-yellow"></div>
+      <div class="radar-traffic-light radar-traffic-light-green"></div>
+    </div>
+    <h2 class="radar-title">Vue Radar</h2>
+  </div>
+
+  <div class="radar-content">
+    <div class="radar-3d-wrapper">
+      <svg class="radar-3d" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="radarGlow">
+            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+          </filter>
+          <linearGradient id="radarGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#000000;stop-opacity:1" />
+          </linearGradient>
+        </defs>
+        
+        <!-- Hexagones concentriques de fond -->
+        <g class="radar-grid">
+          <polygon class="radar-hexagon-bg" points="200,80 305,130 305,270 200,320 95,270 95,130" fill="url(#radarGradient)" stroke="#444" stroke-width="1" opacity="0.1"/>
+          <polygon class="radar-hexagon-bg" points="200,110 280,155 280,245 200,290 120,245 120,155" fill="none" stroke="#555" stroke-width="1" opacity="0.3"/>
+          <polygon class="radar-hexagon-bg" points="200,140 255,175 255,225 200,260 145,225 145,175" fill="none" stroke="#666" stroke-width="1" opacity="0.3"/>
+        </g>
+        
+        <!-- Lignes de repère -->
+        <g class="radar-axes" stroke="#777" stroke-width="1" opacity="0.4">
+          <line x1="200" y1="80" x2="200" y2="320"/>
+          <line x1="95" y1="200" x2="305" y2="200"/>
+          <line x1="95" y1="130" x2="305" y2="270"/>
+          <line x1="305" y1="130" x2="95" y2="270"/>
+        </g>
+        
+        <!-- Pentagone de remplissage dynamique -->
+        <g class="radar-fill-group">
+          <polygon class="radar-fill" points="200,80 305,130 305,270 200,320 95,270" fill="#FF5500" stroke="#FF5500" stroke-width="2" opacity="0.2"/>
+        </g>
+
+        <!-- Points de compétence (pentagone régulier) -->
+        <g class="radar-competences">
+          <!-- Comprendre (haut) -->
+          <g class="radar-point" data-competence="comprendre">
+            <text x="200" y="50" text-anchor="middle" class="radar-percent" fill="#A30000" font-size="14" font-weight="bold">0%</text>
+            <text x="200" y="70" text-anchor="middle" class="radar-label" fill="#B5B5B5" font-size="12">Comprendre</text>
+            <circle cx="200" cy="80" r="8" class="radar-point-bg" fill="#A30000" opacity="0.2"/>
+            <circle cx="200" cy="80" r="6" class="radar-point-dot" fill="#A30000" filter="url(#radarGlow)"/>
+          </g>
+          
+          <!-- Concevoir (haut-droit) -->
+          <g class="radar-point" data-competence="concevoir">
+            <text x="320" y="110" text-anchor="start" class="radar-percent" fill="#FF5500" font-size="14" font-weight="bold">0%</text>
+            <text x="320" y="130" text-anchor="start" class="radar-label" fill="#B5B5B5" font-size="12">Concevoir</text>
+            <circle cx="305" cy="130" r="8" class="radar-point-bg" fill="#FF5500" opacity="0.2"/>
+            <circle cx="305" cy="130" r="6" class="radar-point-dot" fill="#FF5500" filter="url(#radarGlow)"/>
+          </g>
+          
+          <!-- Exprimer (bas-droit) -->
+          <g class="radar-point" data-competence="exprimer">
+            <text x="320" y="270" text-anchor="start" class="radar-percent" fill="#FFCC00" font-size="14" font-weight="bold">0%</text>
+            <text x="320" y="285" text-anchor="start" class="radar-label" fill="#B5B5B5" font-size="12">Exprimer</text>
+            <circle cx="305" cy="270" r="8" class="radar-point-bg" fill="#FFCC00" opacity="0.2"/>
+            <circle cx="305" cy="270" r="6" class="radar-point-dot" fill="#FFCC00" filter="url(#radarGlow)"/>
+          </g>
+          
+          <!-- Développer (bas) -->
+          <g class="radar-point" data-competence="developper">
+            <text x="200" y="360" text-anchor="middle" class="radar-percent" fill="#2A5B1D" font-size="14" font-weight="bold">0%</text>
+            <text x="200" y="378" text-anchor="middle" class="radar-label" fill="#B5B5B5" font-size="12">Développer</text>
+            <circle cx="200" cy="320" r="8" class="radar-point-bg" fill="#2A5B1D" opacity="0.2"/>
+            <circle cx="200" cy="320" r="6" class="radar-point-dot" fill="#2A5B1D" filter="url(#radarGlow)"/>
+          </g>
+          
+          <!-- Entreprendre (haut-gauche) -->
+          <g class="radar-point" data-competence="entreprendre">
+            <text x="80" y="270" text-anchor="end" class="radar-percent" fill="#1A2D5C" font-size="14" font-weight="bold">0%</text>
+            <text x="80" y="285" text-anchor="end" class="radar-label" fill="#B5B5B5" font-size="12">Entreprendre</text>
+            <circle cx="95" cy="270" r="8" class="radar-point-bg" fill="#1A2D5C" opacity="0.2"/>
+            <circle cx="95" cy="270" r="6" class="radar-point-dot" fill="#1A2D5C" filter="url(#radarGlow)"/>
+          </g>
+        </g>
+        
+        <!-- Centre MMI -->
+        <g class="radar-center">
+          <circle cx="200" cy="200" r="20" fill="#B5B5B5" opacity="0.1"/>
+          <circle cx="200" cy="200" r="15" fill="none" stroke="#B5B5B5" stroke-width="1" opacity="0.3"/>
+          <text x="200" y="205" text-anchor="middle" fill="#B5B5B5" font-size="10" font-weight="bold">MMI</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+</div>

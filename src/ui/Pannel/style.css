@@ -89,7 +89,7 @@
 }
 
 .panel-traffic-light-yellow {
-  background: linear-gradient(135deg, #ffbd2e 0%, #ffb000 100%);
+  background: linear-gradient(135deg, #454545ae 0%, #000000 100%);
 }
 
 .panel-traffic-light-green {

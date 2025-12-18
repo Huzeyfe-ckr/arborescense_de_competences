@@ -7,6 +7,7 @@ import template from "./template.html?raw";
 import { Animation } from "@/lib/animation.js";
 import { HistoriqueView } from "@/ui/historique";
 import { PannelView } from "@/ui/Pannel";
+import {RadarView} from "@/ui/radar";
 import { UserData } from "@/data/userdata.js";
 
 
@@ -75,6 +76,7 @@ let V = {
   niveauxView: null,
   buttonsView: null,
   historiqueView: null,
+  radarView: null,
 };
 
 
@@ -111,6 +113,10 @@ V.init = function() {
   V.historiqueView = new HistoriqueView();
   V.rootPage.querySelector('slot[name="historique"]').replaceWith(V.historiqueView.dom());
   V.pannelView.historiqueView = V.historiqueView;
+
+
+  V.radarView = new RadarView();
+  V.rootPage.querySelector('slot[name="radar"]').replaceWith(V.radarView.dom());
   
 
    // Charger les données sauvegardées
@@ -158,6 +164,7 @@ V.init = function() {
   });
   
   V.attachEvents();
+  V.triggerACRippleEffect();
   return V.rootPage;
 };
 
@@ -291,7 +298,7 @@ V.setPercentageFill = function(acElement, percent) {
 
 
 
-// Mettre à jour le panneau des niveaux de compétence
+// Mettre à jour le panneau des niveaux de compétence ET le radar
 V.updateNiveauxPanel = function() {
   const groups = V.flowers.dom().querySelectorAll("g[id^='AC']");
   const competences = {
@@ -304,7 +311,6 @@ V.updateNiveauxPanel = function() {
   
   groups.forEach(g => {
     const acId = g.id;
-    // Récupérer le pourcentage depuis la donnée sauvegardée
     const percentage = parseInt(UserData.get(acId)) || 0;
     const compClass = Array.from(g.classList).find(c => c.startsWith("competence-"));
     
@@ -315,23 +321,29 @@ V.updateNiveauxPanel = function() {
       "competence-4": "developper",
       "competence-5": "entreprendre"
     };
-    
 
-    // Ajouter le pourcentage à la compétence correspondante
     const competenceKey = competenceMap[compClass];
     if (competenceKey) {
       competences[competenceKey].push(percentage);
     }
   });
 
-
-
-
+  // Calculer les moyennes
+  const competencesAvg = {};
   Object.keys(competences).forEach(key => {
     const arr = competences[key];
-    const avg = arr.length > 0 ? Math.round(arr.reduce((a, b) => a + b) / arr.length) : 0;
-    V.niveauxView.updateCompetence(key, avg);
+    competencesAvg[key] = arr.length > 0 ? Math.round(arr.reduce((a, b) => a + b) / arr.length) : 0;
   });
+
+  // Mettre à jour le panneau niveaux
+  if (V.niveauxView && typeof V.niveauxView.updateAll === 'function') {
+    V.niveauxView.updateAll(competencesAvg);
+  }
+  
+  // Mettre à jour le radar en synchrone
+  if (V.radarView && typeof V.radarView.updateAll === 'function') {
+    V.radarView.updateAll(competencesAvg);
+  }
 };
 
 
