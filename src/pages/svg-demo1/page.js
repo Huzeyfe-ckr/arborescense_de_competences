@@ -18,7 +18,7 @@ import { UserData } from "@/data/userdata.js";
 
 let M = {};
 
-let response = await fetch('./src/data/competence.json');
+let response = await fetch('/src/data/competence.json');
 M.CompetencesData = await response.json();
 
 

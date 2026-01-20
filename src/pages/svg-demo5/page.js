@@ -6,7 +6,7 @@ import { Animation } from "@/lib/animation.js";
 
 let M = {};
 
-let response = await fetch('./src/data/stars.json');
+let response = await fetch('/src/data/stars.json');
 M.starsData = await response.json();
 
 let C = {};

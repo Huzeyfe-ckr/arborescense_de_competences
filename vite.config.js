@@ -10,5 +10,5 @@ export default defineConfig({
   build: {
     target: "esnext", //browsers can handle the latest ES features
   },
-  base: "/arborescense_de_competences/",
+  base: "/",
 });
