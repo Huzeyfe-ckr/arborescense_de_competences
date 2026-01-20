@@ -1,6 +1,7 @@
 import { gsap } from "gsap";
 import DrawSVGPlugin from "gsap/DrawSVGPlugin";
-gsap.registerPlugin(DrawSVGPlugin);
+import ScrollToPlugin from "gsap/ScrollToPlugin";
+gsap.registerPlugin(DrawSVGPlugin, ScrollToPlugin);
 
 let Animation = {};
 
@@ -804,7 +805,7 @@ const historiqueAnimations = {
    */
   scrollToBottom(container) {
     gsap.to(container, {
-      scrollTo: { y: "max" },
+      scrollTo: { y: container.scrollHeight },
       duration: 0.4,
       ease: "power2.inOut"
     });
